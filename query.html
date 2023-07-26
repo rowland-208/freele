@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <pre id="content" style="margin-bottom: 0;"></pre>
+    <pre id="ad" style="margin-top: 0;"></pre>
+
+    <script>
+        // An array of witty, satellite-themed ads
+        const ads = [
+            'THIS DATA BROUGHT TO YOU BY SQUARESPACE. Build your online space station.',
+            'WITH SKILLSHARE, YOUR SATELLITE TRACKING SKILLS ARE BETTER THAN EVER. Learn with us.',
+            'AUDIBLE BRINGS YOUR SATELLITES TO LIFE. Listen to the stars.',
+            'NORDVPN ENSURES YOUR SATELLITE COMMUNICATIONS ARE SECURE. No aliens can eavesdrop.',
+            'EXPRESSVPN: FOR A BOUNDARY-LESS GALAXY OF INTERNET CONTENT. Explore more.',
+            'GRAMMARLY HELPS YOU COMMUNICATE WITH THE STARS, error-free.',
+            'WITH CANVA, DESIGN YOUR OWN SATELLITE BLUEPRINTS. Design like a pro.',
+            'LASTPASS SECURES YOUR MISSION CONTROL. No more forgotten passwords.',
+            'MONDAY.COM: ORGANIZE YOUR SPACE MISSIONS HAS NEVER BEEN EASIER. Plan with us.',
+            'WIX ENABLES YOU TO BUILD WEBSITES THAT ARE OUT OF THIS WORLD. Create with ease.'
+        ];
+
+        window.onload = () => {
+            const norad = new URL(window.location.href).searchParams.get("norad");
+            if (norad) {
+                console.log(`Norad parameter is: ${norad}`);
+                // Get the data from the PHP endpoint
+                fetch(`https://celestrak.org/NORAD/elements/gp.php?CATNR=${norad}`)
+                    .then(response => {
+                        console.log(`Response status is: ${response.status}`);
+                        return response.text();
+                    })
+                    .then(text => {
+                        console.log('Received text:', text);
+                        // Display the text
+                        document.getElementById('content').textContent = text;
+
+                        // Display a random ad
+                        const randomAd = ads[Math.floor(Math.random() * ads.length)];
+                        document.getElementById('ad').textContent = randomAd;
+                    })
+                    .catch(error => {
+                        console.error('An error occurred:', error);
+                    });
+            } else {
+                console.log('No norad parameter found in the URL');
+            }
+        };
+    </script>
+</body>
+
+</html>
